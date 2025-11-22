@@ -1,0 +1,19 @@
+# Entorno virtual
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.sqlite3
+
+# Configuración local
+.env
+*.log
+
+# VS Code
+.vscode/
+
+# Django
+staticfiles/
+media/
