@@ -11,7 +11,7 @@ class Vehiculo(models.Model):
     marca = models.CharField(max_length=50, blank=True)
     modelo = models.CharField(max_length=50, blank=True)
     tipo = models.CharField(max_length=20, choices=TIPO_CHOICES)
-    anio = models.PositiveIntegerField()
+    año = models.PositiveIntegerField()
 
     class Meta:
         db_table = 'vehiculo'

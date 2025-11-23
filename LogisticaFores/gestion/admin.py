@@ -3,9 +3,9 @@ from .models import Vehiculo, MovimientoCarga
 
 @admin.register(Vehiculo)
 class VehiculoAdmin(admin.ModelAdmin):
-    list_display = ('patente', 'marca', 'modelo', 'tipo', 'anio')
+    list_display = ('patente', 'marca', 'modelo', 'tipo', 'año')
     search_fields = ('patente', 'marca', 'modelo')
-    list_filter = ('tipo', 'anio')
+    list_filter = ('tipo', 'año')
 
 @admin.register(MovimientoCarga)
 class MovimientoCargaAdmin(admin.ModelAdmin):
