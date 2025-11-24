@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Iniciar sesión{% endblock %}
+
+{% block content %}
+
+<div class="row justify-content-center mt-5">
+  <div class="col-11 col-sm-8 col-md-6 col-lg-4">
+    <div class="card shadow-lg rounded-3 p-4">
+      <h3 class="text-center mb-3 fw-bold">Iniciar sesión</h3>
+
+      {% if form.errors %}
+        <div class="alert alert-danger text-center">
+          ❌ Usuario o contraseña incorrectos.
+        </div>
+      {% endif %}
+
+      <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label for="id_username" class="form-label small text-muted">Usuario</label>
+          {{ form.username }}
+        </div>
+
+        <div class="mb-3">
+          <label for="id_password" class="form-label small text-muted">Contraseña</label>
+          {{ form.password }}
+        </div>
+
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center mt-3">
+          <button type="submit" class="btn btn-primary btn-lg">Entrar</button>
+          <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-lg">Cancelar</a>
+        </div>
+
+      </form>
+
+    </div>
+  </div>
+</div>
+
+{% endblock %}

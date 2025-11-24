@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Inicio{% endblock %}
+
+{% block content %}
+
+<div class="text-center mt-5">
+    <h1 class="fw-bold">Bienvenido al Sistema de Logística Forestal</h1>
+
+    <p class="mt-3 fs-5 text-secondary">
+        Selecciona una opción del menú superior para comenzar.
+    </p>
+
+    <div class="mt-4">
+        <a href="{% url 'vehiculo_list' %}" class="btn btn-primary btn-lg me-2">
+            Gestionar Vehículos
+        </a>
+
+        <a href="{% url 'movimiento_list' %}" class="btn btn-success btn-lg">
+            Movimientos de Carga
+        </a>
+    </div>
+</div>
+
+{% endblock %}

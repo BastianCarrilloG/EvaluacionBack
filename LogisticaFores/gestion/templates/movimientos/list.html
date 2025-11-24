@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Movimientos de Carga</h2>
+
+<a class="btn btn-primary mb-3" href="/movimientos/crear/">+ Registrar Movimiento</a>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Vehículo</th>
+            <th>Tipo</th>
+            <th>Fecha y Hora</th>
+            <th>Origen</th>
+            <th>Destino</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for m in movimientos %}
+        <tr>
+            <td>{{ m.vehiculo.patente }}</td>
+            <td>{{ m.tipo_movimiento }}</td>
+            <td>{{ m.fecha_hora }}</td>
+            <td>{{ m.origen }}</td>
+            <td>{{ m.destino }}</td>
+            <td>
+                <a class="btn btn-warning btn-sm" href="/movimientos/editar/{{ m.id }}/">Editar</a>
+                <a class="btn btn-danger btn-sm" href="/movimientos/eliminar/{{ m.id }}/">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr><td colspan="6" class="text-center">No hay movimientos registrados.</td></tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}
