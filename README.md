@@ -3,30 +3,35 @@ Este README explica cómo preparar el entorno, importar la base de datos MySQL y
 ---
 
 Requisitos previos en la máquina del profesor
+# Instrucciones rápidas para ejecutar el proyecto
+
+Aquí tienes un README limpio y sencillo con lo mínimo necesario para que el profesor ejecute la aplicación y cargue la base de datos usada por el proyecto.
+
+📝 Resumen
+- Nombre de la base de datos que usa el proyecto: `logistica_forestal`.
+- Si entregas un volcado SQL, el archivo recomendado es: `data/db_dump.sql`.
+
+✅ Requisitos
 - Python 3.11+ instalado y en PATH
-- MySQL Server (8.x) o MySQL Workbench instalado y funcionando
+- MySQL Server (8.x) o MySQL Workbench instalado
 - Git instalado
 
-Archivos en este repo relevantes
-- `requirements.txt` — dependencias Python
+🚀 Preparación APP (pasos mínimos)
 
 1) Clonar el repositorio
 
-Abra PowerShell y ejecute:
 ```powershell
 cd C:\ruta\donde\quieres\trabajar
 git clone <URL_DEL_REPO>
 cd LogisticaFores
 ```
 
-2) Preparar un entorno virtual (recomendado)
+2) Crear y activar el entorno virtual
 
 ```powershell
 python -m venv venv
-# Si tu política de ejecución bloquea los scripts de PowerShell (activación):
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force  # si PowerShell bloquea la activación
 .\venv\Scripts\Activate.ps1
-# ahora el prompt debería mostrar (venv)
 ```
 
 3) Instalar dependencias
@@ -36,26 +41,31 @@ pip install --upgrade pip
 pip install -r requirements.txt
 ```
 
-4) Preparar la base de datos MySQL
+🗄️ Preparación DATABASE (solo lo necesario)
 
-Usar MySQL Workbench (GUI)
+4) Importar la base de datos
 
-- Abrir MySQL Workbench → Server → Data Import
-- Seleccionar "Import from Self-Contained File" y elegir el archivo SQL que te entregaron 
-- Click en "Start Import".
+- Opción recomendada (MySQL Workbench GUI):
 
+  Server → Data Import → Import from Self-Contained File → seleccionar `db_dump.sql` → Start Import
 
+- Opción línea de comandos (si el archivo está en `C:\ruta\a\db_dump.sql`):
 
-5) Ajustar las credenciales en `config/settings.py` (si es necesario)
- 
+```powershell
+"C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p < C:\ruta\a\db_dump.sql
+```
 
-Ejemplo (editar `config/settings.py`):
+Nota: el volcado proporcionado crea la base `logistica_forestal` y restaura tablas y datos.
+
+⚙️ Ajustes
+
+5) Si tu MySQL usa otras credenciales, edita `config/settings.py` y asegúrate de que `DATABASES['default']['NAME']` esté en `logistica_forestal` y que `USER`/`PASSWORD`/`HOST`/`PORT` sean correctos.
 
 ```python
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'logistica_forestal',  # cnombre por defecto de la base de datos
+        'NAME': 'logistica_forestal',
         'USER': 'root',
         'PASSWORD': 'su_password',
         'HOST': '127.0.0.1',
@@ -65,52 +75,25 @@ DATABASES = {
 }
 ```
 
-6) Ejecutar migraciones (opcional/seguro)
-
-Si el dump ya incluye `django_migrations`, no es estrictamente necesario correr `migrate`, pero no hace daño y garantizará que el esquema esté actualizado:
-
-```powershell
-cd D:\ruta\LogisticaFores
-python manage.py migrate
-```
-
-7) Crear un superusuario (si quieres acceder al admin)
-
-En la terminal debera ejecutar los siguientes comandos (email es opcional)
+🔐 Crear superusuario (opcional)
 
 ```powershell
 python manage.py createsuperuser
-# Sigue las instrucciones (username, email, password)
 ```
 
-8) Ejecutar la aplicación
+▶️ Ejecutar la aplicación
 
 ```powershell
 python manage.py runserver
-
-# Abrir en el navegador:
-http://127.0.0.1:8000/
+# Abrir en: http://127.0.0.1:8000/
 ```
 
-Acceder al admin:
-```
-http://127.0.0.1:8000/admin/
-```
+🔧 Problemas comunes
 
-9) Consejos finales y resolución de problemas
+- Si falta `pymysql`: ejecutar `pip install -r requirements.txt` dentro del venv.
+- Si PowerShell bloquea la activación: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force`.
+- Si la importación falla por permisos: intentar con `root` o crear la base `logistica_forestal` manualmente antes de importar.
 
-- Si aparece error `ModuleNotFoundError: No module named 'pymysql'`, asegúrate de haber ejecutado `pip install -r requirements.txt` dentro del venv.
-- Si MySQL no está en PATH, usa la ruta completa a `mysql.exe` / `mysqldump.exe` como en los ejemplos.
-- Si PowerShell impide activar el venv por políticas, ejecuta:
-  ```powershell
-  Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force
-  .\venv\Scripts\Activate.ps1
-  ```
-- Si al importar el dump aparece error por user/privilegios, intenta importar como `root`.
+📎 Notas finales
 
-10) (Opcional) Echar un vistazo rápido a este repo
-
-- Carpeta `gestion/` contiene la app principal con modelos `Vehiculo` y `MovimientoCarga`.
-- `manage.py` es el entrypoint para comandos Django.
-- `scripts/` contiene utilidades para export/import de la base.
----
+Este README está pensado para ser breve y específico al proyecto. Si quieres que coloque el archivo `db_dump.sql` dentro de `data/` y lo commitee, dímelo y lo agrego; si prefieres subirlo tú, coloca `db_dump.sql` en `data/` antes de commitear.
