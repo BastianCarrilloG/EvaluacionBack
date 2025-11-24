@@ -7,9 +7,8 @@ Requisitos previos en la máquina del profesor
 
 Aquí tienes un README limpio y sencillo con lo mínimo necesario para que el profesor ejecute la aplicación y cargue la base de datos usada por el proyecto.
 
-📝 Resumen
-- Nombre de la base de datos que usa el proyecto: `logistica_forestal`.
-- Si entregas un volcado SQL, el archivo recomendado es: `data/db_dump.sql`.
+
+
 
 ✅ Requisitos
 - Python 3.11+ instalado y en PATH
@@ -43,6 +42,8 @@ pip install -r requirements.txt
 
 🗄️ Preparación DATABASE (solo lo necesario)
 
+- Nombre de la base de datos que usa el proyecto: `logistica_forestal`.
+
 4) Importar la base de datos
 
 - Opción recomendada (MySQL Workbench GUI):
@@ -55,7 +56,6 @@ pip install -r requirements.txt
 "C:\Program Files\MySQL\MySQL Server 8.0\bin\mysql.exe" -u root -p < C:\ruta\a\db_dump.sql
 ```
 
-Nota: el volcado proporcionado crea la base `logistica_forestal` y restaura tablas y datos.
 
 ⚙️ Ajustes
 
@@ -94,6 +94,3 @@ python manage.py runserver
 - Si PowerShell bloquea la activación: `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope Process -Force`.
 - Si la importación falla por permisos: intentar con `root` o crear la base `logistica_forestal` manualmente antes de importar.
 
-📎 Notas finales
-
-Este README está pensado para ser breve y específico al proyecto. Si quieres que coloque el archivo `db_dump.sql` dentro de `data/` y lo commitee, dímelo y lo agrego; si prefieres subirlo tú, coloca `db_dump.sql` en `data/` antes de commitear.
