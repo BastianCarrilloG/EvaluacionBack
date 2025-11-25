@@ -1,15 +1,28 @@
+"""Formularios para la gestión operativa de logística forestal.
+
+Este módulo contiene formularios personalizados para:
+- Autenticación con estilos Bootstrap personalizados
+- CRUD de vehículos con validaciones de patente y año
+- CRUD de movimientos de carga con validación de fechas
+
+Todos los formularios incluyen validaciones de negocio personalizadas.
+"""
+
 from django import forms
 from django.utils import timezone
 from django.core.exceptions import ValidationError
 import re
 
 from .models import Vehiculo, MovimientoCarga
-
-# Formulario de autenticación personalizado para añadir clases a los widgets
 from django.contrib.auth.forms import AuthenticationForm
 
 
 class CustomAuthForm(AuthenticationForm):
+    """Formulario de autenticación personalizado con estilos Bootstrap.
+    
+    Extiende AuthenticationForm para aplicar clases CSS de Bootstrap (form-control-lg)
+    a los campos username y password, mejorando la experiencia visual sin modificar plantillas.
+    """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         # Estilizar los campos del formulario de login para usar Bootstrap
@@ -33,6 +46,16 @@ class CustomAuthForm(AuthenticationForm):
 PATENTE_REGEX = re.compile(r'^[A-Z]{4}[0-9]{2}$')
 
 class VehiculoForm(forms.ModelForm):
+    """Formulario CRUD para vehículos con validaciones personalizadas.
+    
+    Valida:
+    - Patente: formato chileno (AAAA11) y unicidad en BD
+    - Año: rango 1900 a año actual + 1
+    
+    Attributes:
+        Meta.model: Modelo Vehiculo
+        Meta.fields: patente, marca, modelo, tipo, año
+    """
     class Meta:
         model = Vehiculo
         # conservamos el nombre del campo 'año' tal como lo tienes en el modelo
@@ -53,6 +76,14 @@ class VehiculoForm(forms.ModelForm):
         }
 
     def clean_patente(self):
+        """Valida que la patente tenga formato correcto y sea única.
+        
+        Returns:
+            str: Patente en mayúsculas si es válida.
+            
+        Raises:
+            ValidationError: Si el formato es inválido o la patente ya existe.
+        """
         p = self.cleaned_data.get('patente', '')
         if p is None or str(p).strip() == '':
             raise ValidationError("La patente es obligatoria.")
@@ -71,6 +102,14 @@ class VehiculoForm(forms.ModelForm):
         return p
 
     def clean_año(self):
+        """Valida que el año sea un valor razonable.
+        
+        Returns:
+            int: Año si es válido (entre 1900 y año actual + 1).
+            
+        Raises:
+            ValidationError: Si el año está fuera del rango permitido.
+        """
         anio = self.cleaned_data.get('año')
         if anio is None or str(anio).strip() == '':
             raise ValidationError("El año es obligatorio.")
@@ -85,6 +124,15 @@ class VehiculoForm(forms.ModelForm):
 
 
 class MovimientoForm(forms.ModelForm):
+    """Formulario CRUD para movimientos de carga con validación temporal.
+    
+    Valida:
+    - Fecha/hora: no puede ser en el futuro (validación de negocio)
+    
+    Attributes:
+        Meta.model: Modelo MovimientoCarga
+        Meta.fields: vehiculo, tipo_movimiento, fecha_hora, origen, destino, descripcion
+    """
     class Meta:
         model = MovimientoCarga
         fields = ['vehiculo', 'tipo_movimiento', 'fecha_hora', 'origen', 'destino', 'descripcion']
@@ -107,6 +155,14 @@ class MovimientoForm(forms.ModelForm):
         }
 
     def clean_fecha_hora(self):
+        """Valida que la fecha/hora no sea en el futuro.
+        
+        Returns:
+            datetime: Fecha/hora si es válida (presente o pasada).
+            
+        Raises:
+            ValidationError: Si la fecha es en el futuro.
+        """
         fecha = self.cleaned_data.get('fecha_hora')
         if fecha is None:
             raise ValidationError("La fecha y hora es obligatoria.")
